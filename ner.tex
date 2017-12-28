@@ -21,7 +21,9 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 
-\title{NER: a platform for human-robot information sharing}
+\input{ner-macros}
+
+\title{NER: a platform for robot communicating with other agents}
 
 % The \author macro works with any number of authors. There are two
 % commands used to separate the names and addresses of multiple
@@ -43,15 +45,18 @@
 
 \author{
   Chen Min, PhD\thanks{Expected to graduate in Aug 2018}\\
-  Department of Computer Science, NUS, Singapore\\
+  NEO Robotics\\
+  NUS, Singapore\\
   \texttt{chenmin@comp.nus.edu.sg} \\
   \And
   Xie Shudong, PhD\thanks{Expected to graduate in Dec 2017}\\
-  Department of Computer Science, NUS, Singapore\\
+  NEO Robotics\\
+  Singapore\\
   \texttt{purplebamboot@gmail.com} \\
   \And
   Chen Liyuan, Msc\\
-  Department of Statistics, NUS, Singapore\\
+  NEO Robotics\\
+  Singapore\\
   \texttt{colacly@gmail.com} \\
   %% examples of more authors
   %% \And
@@ -83,7 +88,27 @@
 
 \begin{abstract}
 	
- Nowadays, more and more robots are coming into human beings daily life. The question remains is how robots communicate with each other and any other human-controlled robots peer to peer, without relying on a third-trust-party. This paper describes Neo-Robotics(NER), a new Application that enables robots to communicate with each other using NEO blockchain technology. NER can be installed on robots such as automatic cars and serving robots in hospitals and it will also be developed into a mobile App which is more user friendly. 
+More and more robots are coming into human's daily life,
+\eg, autonomous driving car and household robot.
+Unlike traditional robots in the factory, robots that share the
+same workspace with humans have to gather information on humans'
+physical state and mental state.
+Consider autonomous driving as an example, in order to be safe
+and efficient, the robot car has to
+know the positions of nearby human driven cars and the paths that 
+human drivers are following.
+Currently, robots mostly rely on onboard sensors to gather 
+information, such as lidar and camera.
+However, those sensors might fail due to weather or lighting
+conditions, which might result in fatal accidents.
+% topic
+This paper introduces NEO-Robotics (NER), a platform built on NEO 
+blockchain
+for robot communicating with other agents, which includes humans and
+other robots.
+% the adavantage of NER, and the impact
+
+The question remains is how robots communicate with each other and any other human-controlled robots peer to peer, without relying on a third-trust-party. This paper describes Neo-Robotics(NER), a new Application that enables robots to communicate with each other using NEO blockchain technology. NER can be installed on robots such as automatic cars and serving robots in hospitals and it will also be developed into a mobile App which is more user friendly. 
  
 \end{abstract}
 
