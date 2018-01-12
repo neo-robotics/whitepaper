@@ -23,7 +23,7 @@
 
 \input{ner-macros}
 
-\title{NER: a platform for robot communicating with other agents}
+\title{NRC: a decentralized platform for Human-Robot Communication}
 
 % The \author macro works with any number of authors. There are two
 % commands used to separate the names and addresses of multiple
@@ -45,12 +45,17 @@
 
 \author{
   Chen Min, PhD\thanks{Expected to graduate in Aug 2018}\\
-  NEO Robotics\\
+  NEO Robotics
+  \\
   NUS, Singapore\\
   \texttt{chenmin@comp.nus.edu.sg} \\
   \And
   Xie Shudong, PhD\thanks{Expected to graduate in Dec 2017}\\
-  NEO Robotics\\
+  NEO Robotics
+  \thanks{NEO Robotics is the name of our team.
+      The objective of our team is to use blockchain technology
+      to improve robots' capabilities when working with humans.}
+  \\
   Singapore\\
   \texttt{purplebamboot@gmail.com} \\
   \And
@@ -91,24 +96,42 @@
 More and more robots are coming into human's daily life,
 \eg, autonomous driving car and household robot.
 Unlike traditional robots in the factory, robots that share the
-same workspace with humans have to gather information on humans'
-physical state and mental state.
-Consider autonomous driving as an example, in order to be safe
-and efficient, the robot car has to
+same workspace with humans have to (i) gather information on humans'
+physical state and mental state;
+and (ii) take actions to achieve its own objectives.
+Consider the autonomous driving car as an example, in order to be safe
+and efficient, the robot car needs to 
 know the positions of nearby human driven cars and the paths that 
 human drivers are following.
-Currently, robots mostly rely on onboard sensors to gather 
+Currently, most robots rely purely on onboard sensors to gather 
 information, such as lidar and camera.
 However, those sensors might fail due to weather or lighting
 conditions, which might result in fatal accidents.
 % topic
-This paper introduces NEO-Robotics (NER), a platform built on NEO 
-blockchain
-for robot communicating with other agents, which includes humans and
-other robots.
+This paper introduces NRC, 
+a decentralized platform built on NEO blockchain
+for human-robot communication.
 % the adavantage of NER, and the impact
-
-The question remains is how robots communicate with each other and any other human-controlled robots peer to peer, without relying on a third-trust-party. This paper describes Neo-Robotics(NER), a new Application that enables robots to communicate with each other using NEO blockchain technology. NER can be installed on robots such as automatic cars and serving robots in hospitals and it will also be developed into a mobile App which is more user friendly. 
+% 1. compared with onboard sensors
+Compared with the onboard sensors, NRC can provides much more
+information to the robot for it to make better decisions. For
+example, the robot will be able to know the position of the
+human when they are separated by a wall in the middle, which
+can not be achieved by the onboard sensors.
+% 2. compared with the traditional communication device
+Compared to the traditional communication devices, the blockchain based
+NRC provides serveral adavantages:
+(i) it reduces the cost of trust, \ie, the human and the robot can trust
+the information they received is correct. This is handled automatically
+by the blockchain technology without any extra effort.
+(ii) the NRC token gives incentive for the human to share
+their information to the robots, \ie, the human gets paid instantly
+when his/her information is used by a robot.
+As a proof of concept, we test NRC in the scenario of autonomous driving,
+where we demonstrate the adavantages that NRC provides.
+Note that NRC is general and not limit to autonomous driving. It can
+be potentially be applied to any robots that share their workspace
+with humans, \eg, service robots in restaurants or hospitals.
  
 \end{abstract}
 
