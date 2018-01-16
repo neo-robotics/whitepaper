@@ -59,6 +59,7 @@ qtcreator-*
 *.log
 *.bbl
 *.blg
+*.sta
 
 # Emacs
 .#*
@@ -74,3 +75,4 @@ CATKIN_IGNORE
 *.hh
 *.swo
 
+example/

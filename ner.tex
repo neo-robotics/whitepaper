@@ -20,10 +20,23 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{subcaption}
+\usepackage{amsmath}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[subpreambles=true]{standalone} 
+\usepackage{tikz}
+
+\usepackage{array}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage[ruled]{algorithm}
+\usepackage{algpseudocode}
 
 \input{ner-macros}
 
-\title{NRC: a decentralized platform for Human-Robot Communication}
+\title{\nrc: a decentralized platform for Human-Robot Communication}
 
 % The \author macro works with any number of authors. There are two
 % commands used to separate the names and addresses of multiple
@@ -54,7 +67,8 @@
   NEO Robotics
   \thanks{NEO Robotics is the name of our team.
       The objective of our team is to use blockchain technology
-      to improve robots' capabilities when working with humans.}
+      to improve robots' capabilities and safety when working 
+      with humans.}
   \\
   Singapore\\
   \texttt{purplebamboot@gmail.com} \\
@@ -98,11 +112,7 @@ More and more robots are coming into human's daily life,
 Unlike traditional robots in the factory, robots that share the
 same workspace with humans have to (i) gather information on humans'
 physical state and mental state;
-and (ii) take actions to achieve its own objectives.
-Consider the autonomous driving car as an example, in order to be safe
-and efficient, the robot car needs to 
-know the positions of nearby human driven cars and the paths that 
-human drivers are following.
+and (ii) take actions to achieve their own objectives.
 Currently, most robots rely purely on onboard sensors to gather 
 information, such as lidar and camera.
 However, those sensors might fail due to weather or lighting
@@ -110,14 +120,18 @@ conditions, which might result in fatal accidents.
 % topic
 This paper introduces NRC, 
 a decentralized platform built on NEO blockchain
-for human-robot communication.
+for trust-free human-robot communication.
+With \nrc, the human and the robot are able to broadcast their
+information via blockchain, and receive the 
+information of other agents for decision making.
 % the adavantage of NER, and the impact
 % 1. compared with onboard sensors
-Compared with the onboard sensors, NRC can provides much more
-information to the robot for it to make better decisions. For
-example, the robot will be able to know the position of the
-human when they are separated by a wall in the middle, which
-can not be achieved by the onboard sensors.
+Compared with the onboard sensors, NRC can provides additional 
+information for the robot, which can not be achieved by onboard
+sensors.
+For example, with \nrc, the robot will be able to know the 
+position of the
+human when they are separated by an obstacle in the middle, 
 % 2. compared with the traditional communication device
 Compared to the traditional communication devices, the blockchain based
 NRC provides serveral adavantages:
@@ -129,8 +143,9 @@ their information to the robots, \ie, the human gets paid instantly
 when his/her information is used by a robot.
 As a proof of concept, we test NRC in the scenario of autonomous driving,
 where we demonstrate the adavantages that NRC provides.
-Note that NRC is general and not limit to autonomous driving. It can
-be potentially be applied to any robots that share their workspace
+Note that NRC is general and not limit to autonomous driving. 
+It can
+be potentially applied on any robots that share their workspace
 with humans, \eg, service robots in restaurants or hospitals.
  
 \end{abstract}
@@ -138,284 +153,181 @@ with humans, \eg, service robots in restaurants or hospitals.
 
 \section{Introduction}
 
-Introduction goes here.
+% Motivation
+In the past decades, dramatic prograss has been made in the field
+of robotics.
+Robots are moving from factories, where robots have their own workspace,
+into people's daily life, where robots share their workspace with humans (\figref{fig:robots}).
+% Examples
+There is an urgent need for developing robotic systems that can work closely with
+human without hurting human or disturbing human's working flow.
 
+\begin{figure}[t!]
+    \centering
+    \begin{tabular}{rr}
+        \begin{subfigure}{0.99\linewidth}
+            \centering
+            \includegraphics[width=.5\linewidth]{figs/industrial_robot.pdf} \\
+        \end{subfigure}
+        \\
+        \\
+        \\
+        \\
+        %\begin{tabular}{ccc}
+        \begin{subfigure}{1.0\linewidth}
+            \centering
+            \includegraphics[width=.3\linewidth]{figs/autonomous_car.pdf} 
+            \includegraphics[width=.3\linewidth]{figs/homecare_robot.pdf} 
+            \includegraphics[width=.3\linewidth]{figs/drone_delivery.pdf} 
+        \end{subfigure}
+    \end{tabular}
+    \caption{Top: Robots have their own workspace.
+        Bottom: Robots share their workspace with humans.}
+    \label{fig:robots}
+\end{figure}
+
+% challenges in robot collaborating with humans
+Unlike industrial robots,
+robot that working closely with human has to 
+reason over human's 
+physical state and mental state;
+and plan its own actions accordingly.
+
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}{1.0\linewidth}
+        \centering
+        \includegraphics[width=0.4\linewidth]{intersection_nav.pdf}
+        \hspace{1.5cm}
+        \includegraphics[width=0.4\linewidth]{intersection_nav_block.pdf}
+    \end{subfigure}
+    \caption{Left column:
+        Autonomous car (red) navigating through an unsignalized 
+        intersection, with another human driven car (green) around. 
+        Right column:
+        The onboard sensors might fail due to unexpected obstacles,
+        \eg, trees around the road.
+    }
+    \label{fig:intersection_nav}
+\end{figure}
+
+
+% take an example to explain what is human's mental state, and why it is difficult
+Consider an autonomous driving example in~\figref{fig:intersection_nav} (left column).
+The autonomous car tries to navigate through an unsignalized intersection
+while interacting with another human driver on road. 
+Although it is a trival task for human drivers, it
+turns out to be extremely difficult for a robot car to perform 
+well in such scenario. 
+In order to be safe and efficient, 
+the robot car needs to 
+know the positions of nearby human driven cars and the paths that 
+human drivers are following.
+
+
+% Current robots rely on onboard sensors
+Nowadays, most robots rely purely on onboard sensors,
+\eg, lidar and camera \etc,
+to gather information from the environment. 
+Onboard sensors provides only limited information for the
+robot due to the following reasons.
+\begin{itemize}
+    \item Onboard sensors lack the ability to read humans' mental 
+        state, \eg, the sensors will not be able to tell 
+        which direction the huma driver is going
+        (\figref{fig:intersection_nav}, left column).
+    \item Onboard sensors can fail due to unexpected weather
+        conditions or obstacles, \eg, the sensors is blocked
+        by a tree in the autonomous driving task
+        (\figref{fig:intersection_nav}, right column).
+\end{itemize}
+
+
+% Introduce NRC
+In this paper, we introduce \nrc, a dApp based 
+on NEO blockchain that enables trust-free human-robot 
+communication.
+
+
+% Differentiate NRC from traditional communication devices
+
+
+% Preliminary results on testing NRC on a robot platform
+We tested \nrc on the autonomous driving task as a proof of
+concept.
+(TODO: Preliminary results)
+
+
+% Impact of NRC
+We believe that robots will become more and more popular in
+people's daily life, and \nrc provides a general solution
+for human-robot information sharing.
+Note that, although we demonstrated \nrc on the autonomous
+driving task, \nrc is much more general and it can
+be potentially applied on any robots that share their workspace
+with humans, \eg, service robots in restaurants or hospitals.
 
 
 \section{Background}
+\label{sec:background}
 
-\subsection{NEO blockchain}
+\subsection{Onboard sensors for robot information gathering}
+\label{subsec:onboard-sensors}
 
-Introduction of NEO blockchain.
+\subsection{Traditional communication devices}
+\label{subsec:tranditional-communication}
 
-
-
-\subsection{Existing problems with robotics communication}
+\subsection{The NEO blockchain}
+\label{subsec:neo-blockchain}
 
 This part may introduce the current problems faced by robotics in information sharing.
 
+\section{NRC for human-robot communication}
+\label{sec:nrc}
+
+\subsection{Model}
+\label{subsec:model}
+
+\subsection{Prototype dAPP}
+\label{subsec:prototype}
 
 
-\section{NER}
-What NER is, what NER can constibute to robotics communication.
+\section{NRC token}
 
-\subsection{Motivation}
-Why need this App.
-
-
-
-\subsection{Blockchain based device}
-Technology goes here: the basic ideas of this App and detail methodology used?
-
-
-
-\subsubsection{Functionalities: PC}
-What can this App do on PC.
+\subsection{Incentives for humans to share their information 
+    with robots}
 
 
 
-\subsubsection{Functionalities: Mobile App}
-What will the App do on mobile or other portable instruments.
-
-
-
-\subsection{Implementation}
-We can demostrate some interesting examples in this part.
-
-\subsubsection{Case Study 1: Seeing through the walls}
-
-
-
-\subsubsection{Case Study 2: Avoid the Tesla fatal crash while using autopilot mode}
-
-
-
-
-\subsection{Storage of data shared}
-Where and how we gonna store the data.
-
-
-
-\subsection{Reward scheme of the App}
+\subsection{Reward scheme}
 What is the reward people can gain by sharing the information.
 
 
+\section{Proof of concept}
+\label{sec:proof-concept}
 
-\section{Current progress and time schedule}
-Here we introduce our current progress and what is our plan for next step.
+We can demostrate some interesting examples in this part.
 
-\subsection{Incorporation}
+\subsubsection{Robot seeing through the wall}
 
+%\subsubsection{Case Study 2: Avoid the Tesla fatal crash while using autopilot mode}
 
-\subsection{Technology}
+\section{Roadmap}
+\label{sec:roadmap}
 
-\subsection{Time schedule}
 We are going to achieve what goals by what time.
 
-%
-%\paragraph{Paragraphs}
-%
-%There is also a \verb+\paragraph+ command available, which sets the
-%heading in bold, flush left, and inline with the text, with the
-%heading followed by 1\,em of space.
-%
-%\section{Citations, figures, tables, references}
-%\label{others}
-%
-%These instructions apply to everyone.
-%
-%\subsection{Citations within the text}
-%
-%The \verb+natbib+ package will be loaded for you by default.
-%Citations may be author/year or numeric, as long as you maintain
-%internal consistency.  As to the format of the references themselves,
-%any style is acceptable as long as it is used consistently.
-%
-%The documentation for \verb+natbib+ may be found at
-%\begin{center}
-%  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-%\end{center}
-%Of note is the command \verb+\citet+, which produces citations
-%appropriate for use in inline text.  For example,
-%\begin{verbatim}
-%   \citet{hasselmo} investigated\dots
-%\end{verbatim}
-%produces
-%\begin{quote}
-%  Hasselmo, et al.\ (1995) investigated\dots
-%\end{quote}
-%
-%If you wish to load the \verb+natbib+ package with options, you may
-%add the following before loading the \verb+nips_2017+ package:
-%\begin{verbatim}
-%   \PassOptionsToPackage{options}{natbib}
-%\end{verbatim}
-%
-%If \verb+natbib+ clashes with another package you load, you can add
-%the optional argument \verb+nonatbib+ when loading the style file:
-%\begin{verbatim}
-%   \usepackage[nonatbib]{nips_2017}
-%\end{verbatim}
-%
-%As submission is double blind, refer to your own published work in the
-%third person. That is, use ``In the previous work of Jones et
-%al.\ [4],'' not ``In our previous work [4].'' If you cite your other
-%papers that are not widely available (e.g., a journal paper under
-%review), use anonymous author names in the citation, e.g., an author
-%of the form ``A.\ Anonymous.''
-%
-%\subsection{Footnotes}
-%
-%Footnotes should be used sparingly.  If you do require a footnote,
-%indicate footnotes with a number\footnote{Sample of the first
-%  footnote.} in the text. Place the footnotes at the bottom of the
-%page on which they appear.  Precede the footnote with a horizontal
-%rule of 2~inches (12~picas).
-%
-%Note that footnotes are properly typeset \emph{after} punctuation
-%marks.\footnote{As in this example.}
-%
-%\subsection{Figures}
-%
-%All artwork must be neat, clean, and legible. Lines should be dark
-%enough for purposes of reproduction. The figure number and caption
-%always appear after the figure. Place one line space before the figure
-%caption and one line space after the figure. The figure caption should
-%be lower case (except for first word and proper nouns); figures are
-%numbered consecutively.
-%
-%You may use color figures.  However, it is best for the figure
-%captions and the paper body to be legible if the paper is printed in
-%either black/white or in color.
-%\begin{figure}[h]
-%  \centering
-%  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-%  \caption{Sample figure caption.}
-%\end{figure}
-%
-%\subsection{Tables}
-%
-%All tables must be centered, neat, clean and legible.  The table
-%number and title always appear before the table.  See
-%Table~\ref{sample-table}.
-%
-%Place one line space before the table title, one line space after the
-%table title, and one line space after the table. The table title must
-%be lower case (except for first word and proper nouns); tables are
-%numbered consecutively.
-%
-%Note that publication-quality tables \emph{do not contain vertical
-%  rules.} We strongly suggest the use of the \verb+booktabs+ package,
-%which allows for typesetting high-quality, professional tables:
-%\begin{center}
-%  \url{https://www.ctan.org/pkg/booktabs}
-%\end{center}
-%This package was used to typeset Table~\ref{sample-table}.
-%
-%\begin{table}[t]
-%  \caption{Sample table title}
-%  \label{sample-table}
-%  \centering
-%  \begin{tabular}{lll}
-%    \toprule
-%    \multicolumn{2}{c}{Part}                   \\
-%    \cmidrule{1-2}
-%    Name     & Description     & Size ($\mu$m) \\
-%    \midrule
-%    Dendrite & Input terminal  & $\sim$100     \\
-%    Axon     & Output terminal & $\sim$10      \\
-%    Soma     & Cell body       & up to $10^6$  \\
-%    \bottomrule
-%  \end{tabular}
-%\end{table}
-%
-%\section{Final instructions}
-%
-%Do not change any aspects of the formatting parameters in the style
-%files.  In particular, do not modify the width or length of the
-%rectangle the text should fit into, and do not change font sizes
-%(except perhaps in the \textbf{References} section; see below). Please
-%note that pages should be numbered.
-%
-%\section{Preparing PDF files}
-%
-%Please prepare submission files with paper size ``US Letter,'' and
-%not, for example, ``A4.''
-%
-%Fonts were the main cause of problems in the past years. Your PDF file
-%must only contain Type 1 or Embedded TrueType fonts. Here are a few
-%instructions to achieve this.
-%
-%\begin{itemize}
-%
-%\item You should directly generate PDF files using \verb+pdflatex+.
-%
-%\item You can check which fonts a PDF files uses.  In Acrobat Reader,
-%  select the menu Files$>$Document Properties$>$Fonts and select Show
-%  All Fonts. You can also use the program \verb+pdffonts+ which comes
-%  with \verb+xpdf+ and is available out-of-the-box on most Linux
-%  machines.
-%
-%\item The IEEE has recommendations for generating PDF files whose
-%  fonts are also acceptable for NIPS. Please see
-%  \url{http://www.emfield.org/icuwb2010/downloads/IEEE-PDF-SpecV32.pdf}
-%
-%\item \verb+xfig+ "patterned" shapes are implemented with bitmap
-%  fonts.  Use "solid" shapes instead.
-%
-%\item The \verb+\bbold+ package almost always uses bitmap fonts.  You
-%  should use the equivalent AMS Fonts:
-%\begin{verbatim}
-%   \usepackage{amsfonts}
-%\end{verbatim}
-%followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or
-%\verb+\mathbb{C}+ for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You
-%can also use the following workaround for reals, natural and complex:
-%\begin{verbatim}
-%   \newcommand{\RR}{I\!\!R} %real numbers
-%   \newcommand{\Nat}{I\!\!N} %natural numbers
-%   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-%\end{verbatim}
-%Note that \verb+amsfonts+ is automatically loaded by the
-%\verb+amssymb+ package.
-%
-%\end{itemize}
-%
-%If your file contains type 3 fonts or non embedded TrueType fonts, we
-%will ask you to fix it.
-%
-%\subsection{Margins in \LaTeX{}}
-%
-%Most of the margin problems come from figures positioned by hand using
-%\verb+\special+ or other commands. We suggest using the command
-%\verb+\includegraphics+ from the \verb+graphicx+ package. Always
-%specify the figure width as a multiple of the line width as in the
-%example below:
-%\begin{verbatim}
-%   \usepackage[pdftex]{graphicx} ...
-%   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-%\end{verbatim}
-%See Section 4.4 in the graphics bundle documentation
-%(\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
-%
-%A number of width problems arise when \LaTeX{} cannot properly
-%hyphenate a line. Please give LaTeX hyphenation hints using the
-%\verb+\-+ command when necessary.
 
-\subsubsection*{Acknowledgments}
+%\section*{References}
 
-Do we need this acknowleadgment section?
+%References follow the acknowledgments. Use unnumbered first-level
+%heading for the references. Any choice of citation style is acceptable
+%as long as you are consistent. It is permissible to reduce the font
+%size to \verb+small+ (9 point) when listing the references. {\bf
+  %Remember that you can go over 8 pages as long as the subsequent ones contain
+  %\emph{only} cited references.}
 
-\section*{References}
-
-References follow the acknowledgments. Use unnumbered first-level
-heading for the references. Any choice of citation style is acceptable
-as long as you are consistent. It is permissible to reduce the font
-size to \verb+small+ (9 point) when listing the references. {\bf
-  Remember that you can go over 8 pages as long as the subsequent ones contain
-  \emph{only} cited references.}
-
-\medskip
+%\medskip
 
 \small
 
