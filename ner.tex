@@ -123,22 +123,22 @@ This paper introduces NRC,
 a decentralized platform built on NEO blockchain
 for trust-free human-robot communication.
 With \nrc, the human and the robot are able to broadcast their
-information via blockchain, and receive the 
-information of other agents for decision making.
+information on the blockchain, and receive the 
+information from other agents for their decision making.
 % the adavantage of NER, and the impact
 % 1. compared with onboard sensors
-Compared with the onboard sensors, NRC can provides additional 
-information for the robot, which can not be achieved by onboard
-sensors.
+Compared with onboard sensors, NRC can provides additional 
+information for the robot that can not be achieved by 
+any sensors available.
 For example, with \nrc, the robot will be able to know the 
-position of the
-human when they are separated by an obstacle in the middle, 
+intention of humans.
 % 2. compared with the traditional communication device
-Compared to the traditional communication devices, the blockchain based
+Compared to the traditional communication protocols, 
+the blockchain based
 NRC provides serveral adavantages:
 (i) it reduces the cost of trust, \ie, the human and the robot can trust
 the information they received is correct. This is handled automatically
-by the blockchain technology without any extra effort.
+by the smart contracts without any extra effort.
 (ii) the NRC token gives incentive for the human to share
 their information to the robots, \ie, the human gets paid instantly
 when his/her information is used by a robot.
@@ -147,7 +147,7 @@ where we demonstrate the adavantages that NRC provides.
 Note that NRC is general and not limit to autonomous driving. 
 It can
 be potentially applied on any robots that share their workspace
-with humans, \eg, service robots in restaurants or hospitals.
+with humans.
  
 \end{abstract}
 
@@ -156,12 +156,14 @@ with humans, \eg, service robots in restaurants or hospitals.
 
 % Motivation
 In the past decades, dramatic prograss has been made in the field
-of robotics.
+of robotics~\cref{thrun2005probabilistic,siciliano2016springer}.
 Robots are moving from factories, where robots have their own workspace,
-into people's daily life, where robots share their workspace with humans (\figref{fig:robots}).
+into people's daily life, where robots share their workspace with 
+humans (\figref{fig:robots}).
 % Examples
 There is an urgent need for developing robotic systems that can work closely with
-human without hurting human or disturbing human's working flow.
+human without hurting human or disturbing human's working 
+flow~\cref{goodrich2007human,broz2008planning}.
 
 \begin{figure}[t!]
     \centering
@@ -219,7 +221,7 @@ The autonomous car tries to navigate through an unsignalized intersection
 while interacting with another human driver on road. 
 Although it is a trival task for human drivers, it
 turns out to be extremely difficult for a robot car to perform 
-well in such scenario. 
+well in such scenario~\cref{cunningham2015mpdm}. 
 In order to be safe and efficient, 
 the robot car needs to 
 know the positions of nearby human driven cars and the paths that 
@@ -234,7 +236,7 @@ to gather information from the environment
 Onboard sensors provides only limited information for the
 robot due to the following reasons.
 \begin{itemize}
-    \item Onboard sensors lack the ability to read humans' mental 
+    \item Onboard can not read humans' mental 
         state, \eg, the sensors will not be able to tell 
         which direction the huma driver is going
         (\figref{fig:intersection_nav}, left column).
@@ -307,6 +309,8 @@ with humans, \eg, service robots in restaurants or hospitals.
 % Robot-robot communication
 
 
+This part may introduce the current problems faced by robotics in information sharing.
+
 \subsection{Blockchain and smart contracts}
 \label{subsec:blockchain}
 
@@ -314,9 +318,42 @@ A blockchain is a decentralized ledger that can record
 transactions between two parties in a verfiable and permanent
 way without the need for a third authority~\cref{swan2015blockchain}.
 
-Bitcoin is the first public blockchain emerged in $2008$~\cref{}
+Bitcoin is the first public blockchain that serves the purpose
+of digital currency~\cref{nakamoto2008bitcoin}.
+Few years later, Ethereum launched as the first blockchain with
+programmable and Turing complete smart contracts~\cref{wood2014ethereum}.
+Smart contracts allows developers to program on the blockchain.
+The smart contracts on the blockchain is public that anyone
+can inspect, and it will exectued deterministically to achieve
+certain goals in a way verifiable to any all involved third
+parties.
 
-This part may introduce the current problems faced by robotics in information sharing.
+NEO is China's first publich blockchain, and it is considered to
+be a compelling alternative to Ethereum for smart contracts and
+distributed applications~\cref{zhang2017neo}.
+NEO uses delegated Byzantine Fault Tolerance (dBFT) for 
+consensus~\cref{castro1999practical,vukolic2015quest}, 
+whereas Ethereum previously used Proof
+of Work~\cref{pow2017}, and recently switched to a Proof of Stake
+model~\cref{pos2017}.
+NEO’s consensus model allows for 
+a theoretical transaction throughput up to $10,0000$ tps.
+High transaction speed is critical for \nrc, 
+since it will most likely require 
+real-time communication between many agents.
+
+
+In addition, NEO supports multiple programming lauguages, such as C\#, Java,
+C++, Python, \etc. This makes it easier for developers to develop
+smart contract applications on NEO blockchain. 
+NEO is rapidly growing its ecosystem with the help from the 
+community groups, \eg, City of Zion~\footnote{\url{https://cityofzion.io/}} 
+and New Econo Lab~\footnote{\url{https://github.com/NewEconoLab/Docs}}.
+We expect to see more and more advanced feature coming out from NEO
+platform in the near future.
+
+Considering the various merits of NEO aforementioned, we decide to build
+\nrc on NEO blockchain.
 
 
 \section{NRC for human-robot communication}
