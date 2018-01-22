@@ -304,12 +304,35 @@ with humans, \eg, service robots in restaurants or hospitals.
 \label{subsec:tranditional-ways}
 
 % Onboard sensors
+Most robots today rely on onboard sensors to gather information
+from the environment~\cref{siciliano2016springer},
+including lidar, camera and GPS \etc.
+The onboard sensors often work well when the environment is
+static or well regulated.
+For example, the robots working in the factories have a well
+regulated environment, which people are not allowed to go in.
+However, when robots come into people's daily life, the onboard
+sensors can fail due to various reasons.
+For example, none of the sensors available can read humans'
+mental state, which is crucial for autonomous drving task in 
+\figref{fig:intersection_nav}.
+In addition, the lidar or camera can be easily blocked by
+obstacles or affected by whether conditions
+\cref{xharde2016accuracy,levin2017cold,Ali2017Camera}.
 
 
 % Robot-robot communication
+Beyond onboard sensors, 
+robot can gather information from other agents by
+direct communication.
+Researches have developed protocols for vehicle to vehicle
+communication in the field of autonomous driving
+\cref{yang2004vehicle,torrent2009vehicle,biswas2006vehicle,1570101}.
+% human-robot communication 
 
+However, most robot-X communication protocols
+suffer from two limitations:
 
-This part may introduce the current problems faced by robotics in information sharing.
 
 \subsection{Blockchain and smart contracts}
 \label{subsec:blockchain}
@@ -371,6 +394,9 @@ Considering the various merits of NEO aforementioned, we decide to build
 \subsection{Incentives for humans to share their information 
     with robots}
 
+
+\subsection{Penalty for humans sharing false information 
+    with robots}
 
 
 \subsection{Reward scheme}
