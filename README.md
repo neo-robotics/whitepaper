@@ -1,2 +1,2 @@
 # whitepaper
-NRC whitepaper
+NEO-Robotics (NER) whitepaper
