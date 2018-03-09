@@ -1,2 +1,2 @@
 # whitepaper
-NER whitepaper
+NRC whitepaper
