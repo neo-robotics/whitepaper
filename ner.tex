@@ -61,8 +61,8 @@
   Chen Min, PhD\thanks{Expected to graduate in Aug 2018}\\
   NEO Robotics
   \\
-  NUS, Singapore\\
-  \texttt{chenmin@comp.nus.edu.sg} \\
+  Singapore\\
+  \texttt{mchen.x91@gmail.com} \\
   \And
   Xie Shudong, PhD\thanks{Expected to graduate in Dec 2017}\\
   NEO Robotics
@@ -282,9 +282,12 @@ share the correct information with the robot.
 
 
 % Preliminary results on testing NRC on a robot platform
-We tested \nrc on the autonomous driving task as a proof of
-concept.
-(TODO: Preliminary results)
+We tested \nrc on the autonomous driving task in simulation 
+as a proof of concept.
+The preliminary results showed that by applying the \nrc
+blockchain, the autonomous car was able to know other
+cars positions beforehand, and plan its own actions accordingly
+to avoid accident.
 
 
 % Impact of NRC
@@ -382,41 +385,129 @@ Considering the various merits of NEO aforementioned, we decide to build
 \section{NRC for human-robot communication}
 \label{sec:nrc}
 
-\subsection{Model}
-\label{subsec:model}
 
-\subsection{Prototype}
-\label{subsec:prototype}
+One can view \nrc as a blackbox for trustless human-robot
+communications. \nrc provides the following advantages:
+
+
+\begin{itemize}
+    \item The message on the blockchain can not be changed and can
+        be trusted.
+    \item The decentralized nature of the blockchain technology 
+        will make the
+        whole system more robust to server failures.
+    \item A reward scheme can be built upon the \nrc token 
+        that provides incentives for human to share their information
+        with the robot.
+    \item The reward happens on the blockchain, which does not
+        need any third-party companies. It provides several
+        advantages, \eg, the reward happens instant, there will
+        be no fees (except for the possible transaction fees).
+\end{itemize}
+
+
+We believe that by applying the \nrc blockchain technology, we
+can achieve seamless human-robot communications for better
+robot performance.
 
 
 \section{NRC token}
 
-\subsection{Incentives for humans to share their information 
-    with robots}
+\nrc token plays an important role in the whole system. 
+It has two major functionalities: 
+(1) serves as the reward to human for sharing correct information 
+with the robot.
+(2) serves as the penalty to human if they have been detected for
+sharing false information with the robot.
 
 
-\subsection{Penalty for humans sharing false information 
-    with robots}
+The amount of token supply, and the reward scheme has not
+been decided yet. We plan to do some surveys and user studies
+to figure out the best reward scheme. 
 
 
-\subsection{Reward scheme}
-What is the reward people can gain by sharing the information.
+\section{Detecting false-positive and false-negative information}
+\label{sec:detect}
 
+
+There is a possibility that the human intentionally shares the
+false-positive or false-negative information to the robot. In
+that case, the information might lead to robot accidents or 
+poor robot performance.
+We need to come up with a way to detect those false-positive or
+false-negatie informations and give penalty to the human who
+sent them out. 
+
+
+In most cases, the robot that uses the information should be 
+able to tell
+whether the information it received is true or not. However,
+the robot might make mistakes, \eg, due to sensor 
+failues or the robot itself is lying.
+Thus, we think there is no deterministic way to find out whether
+the human provides false information or not.
+
+However, we can use the information from many robots to
+stochatically tell whether a human is lying or not. For example,
+if there are many more robots saying that a particular person
+provides false information to the robot, there is a high
+probability that the human indeed provides false information.
+Our \nrc system will assign certain penalty to the human if the
+system thinks he is cheating. 
+On the other hand, if one robot keeps on reporting other humans
+while those people have never been reported by other robots, there
+is a high probability that the robot is cheating.
+Our system will
+makes sure one person or one robot can only have one account, 
+which can be 
+achieved by the NEO blockchain easily. In this way, we can 
+make sure the human or the robot will not cheat intentionally, 
+since it will incur a high penalty.
+
+We plan to implement this feature in the future.
 
 \section{Proof of concept}
 \label{sec:proof-concept}
 
-We can demostrate some interesting examples in this part.
 
-\subsubsection{Robot seeing through the wall}
+We demonstrated our idea in the autonomous driving car example
+in simulation~\figref{fig:nrc_simulation}. 
+Please refer to our project github page for more
+details~\footnote{\url{https://github.com/neo-robotics/NRC}}.
 
-%\subsubsection{Case Study 2: Avoid the Tesla fatal crash while using autopilot mode}
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}{1.0\linewidth}
+        \centering
+        \includegraphics[width=0.4\linewidth]{simulation.jpg}
+        \hspace{1.5cm}
+        \includegraphics[width=0.4\linewidth]{ner-simulation.jpg}
+    \end{subfigure}
+    \caption{Left column:
+        The autonomous car fails to detect the other car on
+        the road due to onboard sensor failure.
+        Right column:
+        The autonomous car receives information on the other
+        car through the \nrc blockchain.
+    }
+    \label{fig:nrc_simulation}
+\end{figure}
 
 \section{Roadmap}
 \label{sec:roadmap}
 
-We are going to achieve what goals by what time.
+There are several milestones we want to achieve.
 
+\begin{itemize}
+    \item Build a machine learning module to automatically detect
+        human cheating or robot cheating.
+    \item Fix the reward scheme through survey or user study.
+    \item Scale up the \nrc system to many robots and many human 
+        beings.
+\end{itemize}
+
+We do not have a fixed timeline yet, but we will fix that after
+we hear feedback from the NEO Dev competition committees. 
 
 %\section*{References}
 
@@ -428,6 +519,8 @@ We are going to achieve what goals by what time.
   %\emph{only} cited references.}
 
 %\medskip
+
+\newpage
 
 \small
 
